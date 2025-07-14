@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stranger English — репетитор по английскому</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Основные стили */
+    body {
+      margin: 0;
+      font-family: 'Rubik', sans-serif;
+      background: linear-gradient(to bottom, #0f0f1e, #1e2a38);
+      color: #fdfdfd;
+      overflow-x: hidden;
+      font-size: 1.2em;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* Эффекты частиц и свечения */
+    .sparks, .particles, .lightning, .glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .spark, .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    .spark {
+      width: 4px;
+      height: 4px;
+      background: #ffcc00;
+      animation: spark-fly 3s linear infinite;
+    }
+
+    .particle {
+      width: 2px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.3);
+      animation: float-up 10s linear infinite;
+    }
+
+    .glow {
+      background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 80%);
+      animation: glow-flicker 6s infinite;
+    }
+
+    @keyframes spark-fly {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      50% { transform: translateY(-100px) scale(1.5); opacity: 0.8; }
+      100% { transform: translateY(-200px) scale(0); opacity: 0; }
+    }
+
+    @keyframes float-up {
+      0% { transform: translateY(0); opacity: 0; }
+      10% { opacity: 0.2; }
+      50% { transform: translateY(-100px); opacity: 0.4; }
+      100% { transform: translateY(-200px); opacity: 0; }
+    }
+
+    .lightning {
+      background: rgba(255, 255, 255, 0);
+      animation: lightning-flash 15s infinite;
+    }
+
+    @keyframes lightning-flash {
+      0%, 97%, 100% { background: rgba(255, 255, 255, 0); }
+      98% { background: rgba(255, 255, 255, 0.1); }
+      99% { background: rgba(255, 255, 255, 0.3); }
+    }
+
+    @keyframes glow-flicker {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Анимации и декоративные элементы */
+    .red-orb {
+      position: fixed;
+      width: 14px;
+      height: 14px;
+      background: radial-gradient(circle, #ff4c4c 0%, #700000 70%);
+      border-radius: 50%;
+      box-shadow: 0 0 8px 4px rgba(255, 0, 0, 0.4);
+      animation: pulse 1.5s infinite, move-orb 12s infinite ease-in-out;
+      z-index: 3;
+    }
+
+    .red-orb.small {
+      width: 10px;
+      height: 10px;
+      animation: pulse 1.5s infinite, move-orb-alt 14s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.7; }
+    }
+
+    @keyframes move-orb {
+      0%   { transform: translate(0vw, 10vh); }
+      25%  { transform: translate(85vw, 20vh); }
+      50%  { transform: translate(40vw, 85vh); }
+      75%  { transform: translate(5vw, 75vh); }
+      100% { transform: translate(0vw, 10vh); }
+    }
+
+    @keyframes move-orb-alt {
+      0%   { transform: translate(90vw, 15vh); }
+      25%  { transform: translate(70vw, 80vh); }
+      50%  { transform: translate(10vw, 60vh); }
+      75%  { transform: translate(85vw, 30vh); }
+      100% { transform: translate(90vw, 15vh); }
+    }
+
+    .red-orb:hover {
+      box-shadow: 0 0 15px 8px rgba(255, 0, 0, 0.7);
+      transform: scale(1.5);
+      transition: all 0.3s ease;
+    }
+
+    /* Секции и заголовки */
+    header {
+      text-align: center;
+      padding: 80px 20px;
+      background: radial-gradient(circle at top, #701c75, #1a1a2e);
+      box-shadow: 0 0 60px rgba(255, 0, 120, 0.2) inset;
+      position: relative;
+      z-index: 2;
+    }
+
+    .header-lightning {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0);
+      pointer-events: none;
+      animation: header-lightning-flash 20s infinite;
+    }
+
+    @keyframes header-lightning-flash {
+      0%, 98%, 100% { background: rgba(255, 255, 255, 0); }
+      99% { background: rgba(255, 255, 255, 0.3); }
+    }
+
+    header h1 {
+      font-size: 3em;
+      color: #ff4c4c;
+      text-shadow: 0 0 10px #ff4c4c, 0 0 30px #ff4c4c;
+      margin-bottom: 20px;
+    }
+
+    section {
+      padding: 60px 20px;
+      max-width: 960px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    section h2 {
+      color: #ff6b6b;
+      border-bottom: 2px solid #ff6b6b;
+      display: inline-block;
+      margin-bottom: 30px;
+      font-size: 2em;
+    }
+
+    /* Стили для слайдера */
+    .slider-container {
+      position: relative;
+      max-width: 800px;
+      margin: 40px auto;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .slider img {
+      width: 100%;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .slider-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+
+    .slider-nav button {
+      background: rgba(255, 107, 107, 0.7);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2em;
+      margin: 0 10px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .slider-nav button:hover {
+      background: rgba(255, 76, 76, 0.9);
+      transform: scale(1.1);
+    }
+
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .slider-dots button {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 107, 107, 0.5);
+      margin: 0 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .slider-dots button.active {
+      background: #ff6b6b;
+      transform: scale(1.2);
+    }
+
+    /* Блоки с контентом */
+    .features, .pricing, .reviews {
+      display: grid;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .feature-box, .price-box, .review-box {
+      background: rgba(53, 58, 80, 0.7);
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .feature-box:hover, .price-box:hover, .review-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(255, 0, 0, 0.5);
+      animation: glitch 1s steps(2, end) infinite;
+    }
+
+    /* Кнопки */
+    .btn {
+      display: inline-block;
+      background: #ff4c4c;
+      color: #fff;
+      padding: 14px 28px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #ff4c4c;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      font-size: 1.1em;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: #ff6b6b;
+    }
+
+    /* Контактная секция */
+    .contact {
+      text-align: center;
+    }
+
+    .contact p {
+      margin: 10px 0;
+    }
+
+    /* Футер */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 1em;
+      background: #1a1a2e;
+      box-shadow: 0 -10px 40px rgba(255, 0, 0, 0.1) inset;
+      margin-top: 60px;
+    }
+
+    /* Глитч эффект */
+    .glitch-text:hover {
+      animation: glitch 1s steps(2, end) infinite;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.2em;
+      }
+      
+      section {
+        padding: 40px 15px;
+      }
+      
+      .slider-container {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Эффекты -->
+  <div class="sparks">
+    <div class="spark" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="spark" style="left: 30%; animation-delay: 0.5s;"></div>
+    <div class="spark" style="left: 50%; animation-delay: 1s;"></div>
+    <div class="spark" style="left: 70%; animation-delay: 1.5s;"></div>
+    <div class="spark" style="left: 90%; animation-delay: 2s;"></div>
+  </div>
+  <div class="particles">
+    <div class="particle" style="left: 5%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 15%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 25%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: 8s;"></div>
+    <div class="particle" style="left: 85%; animation-delay: 10s;"></div>
+  </div>
+  <div class="lightning"></div>
+  <div class="glow"></div>
+
+  <!-- Декоративные элементы -->
+  <div class="red-orb"></div>
+  <div class="red-orb small"></div>
+  <div class="red-orb small"></div>
+  <div class="red-orb small"></div>
+  <div class="red-orb small moving" style="top: 80vh; left: 10vw; animation-delay: 3s;"></div>
+  <div class="red-orb small moving" style="top: 90vh; left: 90vw; animation-delay: 6s;"></div>
+
+  <!-- Шапка сайта -->
+  <header>
+    <div class="header-lightning"></div>
+    <h1 class="glitch-text">Stranger English</h1>
+    <p>Превращаем изучение английского в захватывающее приключение!</p>
+  </header>
+
+  <!-- Основные секции -->
+  <section>
+    <h2>Кто я?</h2>
+    <p>Привет! Я — репетитор по английскому языку с уникальным подходом. Специализируюсь на работе с детьми и подростками 9-16 лет. Мои уроки — это не скучные упражнения, а увлекательные квесты, где мы расшифровываем послания, спасаем миры и путешествуем по языковым вселенным.</p>
+  </section>
+
+  <section>
+    <h2>Почему выбирают меня?</h2>
+    <div class="features">
+      <div class="feature-box">✅ Уроки без скуки и зубрёжки — только живое общение и игры</div>
+      <div class="feature-box">✅ Современные методики через видео, мемы и интерактивные задания</div>
+      <div class="feature-box">✅ Индивидуальный подход к каждому ученику</div>
+      <div class="feature-box">✅ Комплексное развитие: чтение, грамматика, говорение и аудирование</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Как проходят уроки?</h2>
+    <div class="slider-container">
+      <div class="slider">
+        <img src="https://i.ibb.co/Kx0TBGZJ/question-wheel-png.png" alt="Интерактивное колесо вопросов на уроке">
+        <img src="https://i.ibb.co/JwBvzVDt/pair-no-pair-png.png" alt="Игра на подбор парных карточек">
+        <img src="https://i.ibb.co/35Z4Y767/my-your-png.png" alt="Упражнение на притяжательные местоимения">
+        <img src="https://i.ibb.co/zT9s6r8m/fireflies-png.png" alt="Игра 'Светлячки' для запоминания слов">
+        <img src="https://i.ibb.co/tM63vM3k/appearance-png.png" alt="Урок по описанию внешности">
+      </div>
+      <div class="slider-nav">
+        <button class="slider-prev">❮</button>
+        <button class="slider-next">❯</button>
+      </div>
+      <div class="slider-dots">
+        <button class="slider-dot active" data-index="0"></button>
+        <button class="slider-dot" data-index="1"></button>
+        <button class="slider-dot" data-index="2"></button>
+        <button class="slider-dot" data-index="3"></button>
+        <button class="slider-dot" data-index="4"></button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Отзывы</h2>
+    <div class="reviews">
+      <div class="review-box">🌟 «Дочка в восторге от уроков! Раньше английский был мучением, теперь ждёт каждое занятие. За 3 месяца виден потрясающий прогресс!» — Наталья, мама ученицы 10 лет</div>
+      <div class="review-box">🌟 «У сына (13 лет) улучшились оценки в школе, но главное — появился настоящий интерес к языку. Уроки как мини-сериал — всегда интрига!» — Олег, папа ученика</div>
+      <div class="review-box">🌟 «Самый креативный подход! Ребёнок даже не понимает, что учится — для него это просто увлекательная игра.» — Марина, мама ученика 9 лет</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Формат и цены</h2>
+    <div class="pricing">
+      <div class="price-box">
+        <strong>Индивидуальные занятия</strong><br />
+        <span style="font-size: 1.3em; color: #ff6b6b;">1200 ₽</span> / 45 мин<br />
+        Персональный подход и 100% внимания
+      </div>
+      <div class="price-box">
+        <strong>Мини-группа 2-3 чел.</strong><br />
+        <span style="font-size: 1.3em; color: #ff6b6b;">800 ₽</span> с ученика<br />
+        Обучение через взаимодействие
+      </div>
+      <div class="price-box">
+        <strong>Пробный урок</strong><br />
+        <span style="font-size: 1.3em; color: #ff6b6b;">Бесплатно</span><br />
+        Знакомство и диагностика уровня
+      </div>
+    </div>
+    <p style="text-align:center;"><a href="#contact" class="btn">Записаться на пробный урок</a></p>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Связаться со мной</h2>
+    <div style="text-align: center;">
+      <p>📧 stranger.english.tutor@gmail.com</p>
+      <p>📱 +7 999 123 45 67 (WhatsApp/Telegram)</p>
+      <p>📍 Занятия онлайн из любой точки мира</p>
+      <a href="#" class="btn">Написать в WhatsApp</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2023 Stranger English | Английский как приключение</p>
+    <p style="margin-top: 15px; font-size: 0.9em;">Дизайн в стиле "Очень странных дел"</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const slider = document.querySelector('.slider');
+      const slides = document.querySelectorAll('.slider img');
+      const dots = document.querySelectorAll('.slider-dot');
+      const prevBtn = document.querySelector('.slider-prev');
+      const nextBtn = document.querySelector('.slider-next');
+      
+      let currentSlide = 0;
+      const slideCount = slides.length;
+      
+      // Устанавливаем ширину слайдера
+      function initSlider() {
+        slider.style.width = `${slideCount * 100}%`;
+        slides.forEach(slide => {
+          slide.style.width = `${100 / slideCount}%`;
+        });
+      }
+      
+      // Переход к конкретному слайду
+      function goToSlide(index) {
+        currentSlide = index;
+        const offset = -currentSlide * (100 / slideCount);
+        slider.style.transform = `translateX(${offset}%)`;
+        
+        // Обновляем активную точку
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[currentSlide].classList.add('active');
+      }
+      
+      // Следующий слайд
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % slideCount;
+        goToSlide(currentSlide);
+      }
+      
+      // Предыдущий слайд
+      function prevSlide() {
+        currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+        goToSlide(currentSlide);
+      }
+      
+      // Инициализация
+      initSlider();
+      
+      // Обработчики событий
+      nextBtn.addEventListener('click', nextSlide);
+      prevBtn.addEventListener('click', prevSlide);
+      
+      dots.forEach(dot => {
+        dot.addEventListener('click', function() {
+          const slideIndex = parseInt(this.getAttribute('data-index'));
+          goToSlide(slideIndex);
+        });
+      });
+      
+      // Автопрокрутка (опционально)
+      setInterval(nextSlide, 5000);
+    });
+  </script>
+</body>
+</html>
